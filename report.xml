@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="weather.api.test" tests="6" time="6.580">
+  <testsuite name="00_UnsettingVariables" id="5e8fe42e-d947-4918-a8e8-7b2822ac1b60" timestamp="2022-04-11T10:06:25.371Z" tests="0" failures="0" errors="0" time="1.150"/>
+  <testsuite name="01_Register_Station_wo_API_key" id="6a465639-811f-4d92-bf72-77a11231daa9" timestamp="2022-04-11T10:06:25.371Z" tests="2" failures="0" errors="0" time="2.668">
+    <testcase name="returned error message is valid:  Invalid API key. Please see http://openweathermap.org/faq#error401 for more info." time="2.668" classname="WeatherApiTest"/>
+    <testcase name="Status code is 401" time="2.668" classname="WeatherApiTest"/>
+  </testsuite>
+  <testsuite name="02_Register_Station_w_API_Key_1" id="91034d12-a2bc-483f-a872-38fdf9e34ca9" timestamp="2022-04-11T10:06:25.371Z" tests="1" failures="0" errors="0" time="0.706">
+    <testcase name="Status code is 201" time="0.706" classname="WeatherApiTest"/>
+  </testsuite>
+  <testsuite name="03_GET_Station_1" id="1f9b25c0-04c7-4158-b497-0a7f498b91b9" timestamp="2022-04-11T10:06:25.371Z" tests="6" failures="0" errors="0" time="0.686">
+    <testcase name="external_id is valid:  DEMO_TEST001" time="0.686" classname="WeatherApiTest"/>
+    <testcase name="name is valid:  Team Demo Test Station 001" time="0.686" classname="WeatherApiTest"/>
+    <testcase name="longitude is valid:  -122.43" time="0.686" classname="WeatherApiTest"/>
+    <testcase name="latitude is valid:  33.33" time="0.686" classname="WeatherApiTest"/>
+    <testcase name="altitude is valid:  222" time="0.686" classname="WeatherApiTest"/>
+    <testcase name="Status code is 200" time="0.686" classname="WeatherApiTest"/>
+  </testsuite>
+  <testsuite name="04_Register_Station_w_API_Key_2" id="8e060990-d20a-450e-bfa8-2f67e83585c7" timestamp="2022-04-11T10:06:25.371Z" tests="1" failures="0" errors="0" time="0.674">
+    <testcase name="Status code is 201" time="0.674" classname="WeatherApiTest"/>
+  </testsuite>
+  <testsuite name="05_GET_Station_2" id="881eb85d-bce3-4179-a51d-3cc52ed293e8" timestamp="2022-04-11T10:06:25.371Z" tests="6" failures="0" errors="0" time="0.696">
+    <testcase name="external_id is valid:  DEMO_TEST002" time="0.696" classname="WeatherApiTest"/>
+    <testcase name="name is valid:  Team Demo Test Station 002" time="0.696" classname="WeatherApiTest"/>
+    <testcase name="longitude is valid:  -122.44" time="0.696" classname="WeatherApiTest"/>
+    <testcase name="latitude is valid:  44.44" time="0.696" classname="WeatherApiTest"/>
+    <testcase name="altitude is valid:  111" time="0.696" classname="WeatherApiTest"/>
+    <testcase name="Status code is 200" time="0.696" classname="WeatherApiTest"/>
+  </testsuite>
+</testsuites>

@@ -1,0 +1,451 @@
+{
+	"info": {
+		"_postman_id": "ffecbb47-6b4d-478a-aa18-01d2ee92d507",
+		"name": "weather.api.test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "00_UnsettingVariables",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.unset(\"registerStationId1\");\r",
+							"pm.environment.unset(\"registerStationId2\");\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://postman-echo.com/get?foo1=bar1&foo2=bar2",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"get"
+					],
+					"query": [
+						{
+							"key": "foo1",
+							"value": "bar1"
+						},
+						{
+							"key": "foo2",
+							"value": "bar2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "01_Register_Station_wo_API_key",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"    let jsonData = pm.response.json();",
+							"    let message = jsonData.message;",
+							"    ",
+							"    // error message",
+							"    pm.test(\"returned error message is valid:  \" + message, function () {",
+							"        pm.expect(message).to.contain('Invalid API key. Please see http://openweathermap.org/faq#error401 for more info.');",
+							"    });",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true,
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true,
+					"user-agent": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"external_id\": \"SF_TEST001\",\n  \"name\": \"San Francisco Test Station\",\n  \"latitude\": 37.76,\n  \"longitude\": -122.43,\n  \"altitude\": 150\n}"
+				},
+				"url": {
+					"raw": "http://api.openweathermap.org/data/3.0/stations",
+					"protocol": "http",
+					"host": [
+						"api",
+						"openweathermap",
+						"org"
+					],
+					"path": [
+						"data",
+						"3.0",
+						"stations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02_Register_Station_w_API_Key_1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"    let jsonData = pm.response.json();",
+							"",
+							"    let id = jsonData.ID;",
+							"",
+							"    let external_id = jsonData.external_id;",
+							"    let name = jsonData.name;",
+							"    let latitude = jsonData.latitude;",
+							"    let longitude = jsonData.longitude;",
+							"    let altitude = jsonData.altitude;",
+							"",
+							"    console.log(`ID: ${id}`);",
+							"    console.log(`external_id: ${external_id}`);",
+							"    console.log(`name: ${name}`);",
+							"    console.log(`latitude: ${latitude}`);",
+							"    console.log(`longitude: ${longitude}`);",
+							"    console.log(`altitude: ${altitude}`);",
+							"    ",
+							"    pm.environment.set(\"registerStationId1\", id);",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true,
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true,
+					"user-agent": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"external_id\": \"{{external_id1}}\",\n  \"name\": \"{{name1}}\",\n  \"latitude\": {{latitude1}},\n  \"longitude\": {{longitude1}},\n  \"altitude\": {{altitude1}}\n}"
+				},
+				"url": {
+					"raw": "http://api.openweathermap.org/data/3.0/stations?appid=610428d63ccc3677234e999e4b2725a5",
+					"protocol": "http",
+					"host": [
+						"api",
+						"openweathermap",
+						"org"
+					],
+					"path": [
+						"data",
+						"3.0",
+						"stations"
+					],
+					"query": [
+						{
+							"key": "appid",
+							"value": "610428d63ccc3677234e999e4b2725a5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03_GET_Station_1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    let jsonData = pm.response.json();",
+							"",
+							"    let external_id = jsonData.external_id;",
+							"    let name = jsonData.name;",
+							"    let latitude = jsonData.latitude;",
+							"    let longitude = jsonData.longitude;",
+							"    let altitude = jsonData.altitude;",
+							"",
+							"    pm.test(\"external_id is valid:  \" + external_id, function () {",
+							"        pm.expect(external_id).to.eql(pm.environment.get(\"external_id1\"));",
+							"    });",
+							"",
+							"    pm.test(\"name is valid:  \" + name, function () {",
+							"        pm.expect(name).to.eql(pm.environment.get(\"name1\"));",
+							"    });",
+							"",
+							"    pm.test(\"longitude is valid:  \" + longitude, function () {",
+							"        pm.expect(longitude).to.eql(pm.environment.get(\"longitude1\"));",
+							"    });",
+							"",
+							"    pm.test(\"latitude is valid:  \" + latitude, function () {",
+							"        pm.expect(latitude).to.eql(pm.environment.get(\"latitude1\"));",
+							"    });",
+							"",
+							"    pm.test(\"altitude is valid:  \" + altitude, function () {",
+							"        pm.expect(altitude).to.eql(pm.environment.get(\"altitude1\"));",
+							"    });",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true,
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true,
+					"user-agent": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://api.openweathermap.org/data/3.0/stations/{{registerStationId1}}?appid=610428d63ccc3677234e999e4b2725a5",
+					"protocol": "http",
+					"host": [
+						"api",
+						"openweathermap",
+						"org"
+					],
+					"path": [
+						"data",
+						"3.0",
+						"stations",
+						"{{registerStationId1}}"
+					],
+					"query": [
+						{
+							"key": "appid",
+							"value": "610428d63ccc3677234e999e4b2725a5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04_Register_Station_w_API_Key_2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"    let jsonData = pm.response.json();",
+							"",
+							"    let id = jsonData.ID;",
+							"    ",
+							"    let external_id = jsonData.external_id;",
+							"    let name = jsonData.name;",
+							"    let latitude = jsonData.latitude;",
+							"    let longitude = jsonData.longitude;",
+							"    let altitude = jsonData.altitude;",
+							"",
+							"    console.log(`ID: ${id}`);",
+							"    console.log(`external_id: ${external_id}`);",
+							"    console.log(`name: ${name}`);",
+							"    console.log(`latitude: ${latitude}`);",
+							"    console.log(`longitude: ${longitude}`);",
+							"    console.log(`altitude: ${altitude}`);",
+							"",
+							"    pm.environment.set(\"registerStationId2\", id);",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true,
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true,
+					"user-agent": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"external_id\": \"{{external_id2}}\",\n  \"name\": \"{{name2}}\",\n  \"latitude\": {{latitude2}},\n  \"longitude\": {{longitude2}},\n  \"altitude\": {{altitude2}}\n}"
+				},
+				"url": {
+					"raw": "http://api.openweathermap.org/data/3.0/stations?appid=610428d63ccc3677234e999e4b2725a5",
+					"protocol": "http",
+					"host": [
+						"api",
+						"openweathermap",
+						"org"
+					],
+					"path": [
+						"data",
+						"3.0",
+						"stations"
+					],
+					"query": [
+						{
+							"key": "appid",
+							"value": "610428d63ccc3677234e999e4b2725a5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05_GET_Station_2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    let jsonData = pm.response.json();",
+							"",
+							"    let external_id = jsonData.external_id;",
+							"    let name = jsonData.name;",
+							"    let latitude = jsonData.latitude;",
+							"    let longitude = jsonData.longitude;",
+							"    let altitude = jsonData.altitude;",
+							"",
+							"    pm.test(\"external_id is valid:  \" + external_id, function () {",
+							"        pm.expect(external_id).to.eql(pm.environment.get(\"external_id2\"));",
+							"    });",
+							"",
+							"    pm.test(\"name is valid:  \" + name, function () {",
+							"        pm.expect(name).to.eql(pm.environment.get(\"name2\"));",
+							"    });",
+							"",
+							"    pm.test(\"longitude is valid:  \" + longitude, function () {",
+							"        pm.expect(longitude).to.eql(pm.environment.get(\"longitude2\"));",
+							"    });",
+							"",
+							"    pm.test(\"latitude is valid:  \" + latitude, function () {",
+							"        pm.expect(latitude).to.eql(pm.environment.get(\"latitude2\"));",
+							"    });",
+							"",
+							"    pm.test(\"altitude is valid:  \" + altitude, function () {",
+							"        pm.expect(altitude).to.eql(pm.environment.get(\"altitude2\"));",
+							"    });",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true,
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true,
+					"user-agent": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://api.openweathermap.org/data/3.0/stations/{{registerStationId2}}?appid=610428d63ccc3677234e999e4b2725a5",
+					"protocol": "http",
+					"host": [
+						"api",
+						"openweathermap",
+						"org"
+					],
+					"path": [
+						"data",
+						"3.0",
+						"stations",
+						"{{registerStationId2}}"
+					],
+					"query": [
+						{
+							"key": "appid",
+							"value": "610428d63ccc3677234e999e4b2725a5"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
